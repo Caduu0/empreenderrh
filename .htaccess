@@ -1,0 +1,28 @@
+# Bloquear a listagem de diretórios abertos (Segurança contra varreduras)
+Options -Indexes
+
+# Ativar motor de reescrita para manipular URLs
+RewriteEngine On
+
+# ----------------------------------------------------
+# 1. FORÇAR USO DE HTTPS EM PRODUÇÃO
+# ----------------------------------------------------
+# Atenção: Se for testar no localhost (XAMPP/WAMP) sem SSL, você pode comentar as duas linhas abaixo usando #
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ----------------------------------------------------
+# 2. URLS AMIGÁVEIS (Esconder o .php das requisições)
+# ----------------------------------------------------
+# Isso permite que acesso a /login exiba nativamente /login.php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+# ----------------------------------------------------
+# 3. BLINDAGEM DE ARQUIVOS SENSÍVEIS (Proteção Severa)
+# ----------------------------------------------------
+# Impede o download acidental do config ou arquivos SQL
+<FilesMatch "\.(sql|log|ini|env|md)$">
+    Require all denied
+</FilesMatch>

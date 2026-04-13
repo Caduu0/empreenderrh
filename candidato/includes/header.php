@@ -1,0 +1,71 @@
+<?php
+// candidato/includes/header.php
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'candidato') {
+    header('Location: ../login.php');
+    exit;
+}
+$current_page = basename($_SERVER['PHP_SELF']);
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Candidato - EmpreenderRH</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 flex flex-col min-h-screen">
+    <nav class="bg-blue-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Mobile menu button -->
+                <div class="flex items-center md:hidden">
+                    <button type="button" class="text-white hover:text-blue-200 focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-xl font-bold tracking-tight">Empreender<span class="text-blue-200">RH</span></span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="dashboard.php" class="px-3 py-2 rounded-md font-medium transition-colors <?= $current_page == 'dashboard.php' ? 'bg-blue-800 text-white' : 'text-blue-100 hover:bg-blue-600 hover:text-white' ?>">Dashboard</a>
+                            <a href="vagas.php" class="px-3 py-2 rounded-md font-medium transition-colors <?= $current_page == 'vagas.php' ? 'bg-blue-800 text-white' : 'text-blue-100 hover:bg-blue-600 hover:text-white' ?>">Explorar Vagas</a>
+                            <a href="perfil.php" class="px-3 py-2 rounded-md font-medium transition-colors <?= $current_page == 'perfil.php' ? 'bg-blue-800 text-white' : 'text-blue-100 hover:bg-blue-600 hover:text-white' ?>">Meu Perfil</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center md:ml-6 space-x-4">
+                        <span class="text-sm font-medium text-blue-100"><?= htmlspecialchars($_SESSION['email']) ?></span>
+                        <a href="../logout.php" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg font-semibold text-sm transition-colors shadow-md">Sair</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden bg-blue-800" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="dashboard.php" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-700">Dashboard</a>
+                <a href="vagas.php" class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:bg-blue-700 hover:text-white">Explorar Vagas</a>
+                <a href="perfil.php" class="block px-3 py-2 rounded-md text-base font-medium text-blue-100 hover:bg-blue-700 hover:text-white">Meu Perfil</a>
+                <a href="../logout.php" class="block px-3 py-2 rounded-md text-base font-medium text-red-300 hover:bg-red-600 hover:text-white mt-4 border-t border-blue-700 pt-4">Sair</a>
+            </div>
+        </div>
+    </nav>
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
