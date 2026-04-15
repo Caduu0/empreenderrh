@@ -2,7 +2,7 @@
 session_start();
 require_once 'config/db.php';
 
-// Redireciona se já estiver logado
+// Redireciona se estiver logado
 if (isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $razao_social = $_POST['razao_social'] ?? '';
     $cnpj = preg_replace('/[^0-9]/', '', $_POST['cnpj'] ?? '');
 
-    // Validação básica
+    // Validação
     if (empty($email) || empty($password) || empty($password_confirm)) {
         $error = "Preencha os campos obrigatórios (E-mail e Senhas).";
     } elseif ($password !== $password_confirm) {
@@ -39,17 +39,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "Razão Social e CNPJ são obrigatórios para empresas.";
         } else {
             try {
-                // Iniciar transação, já que criaremos em duas tabelas
                 $pdo->beginTransaction();
 
-                // Verificar se o e-mail já existe
+                // Verifica se o e-mail já existe
                 $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
                 $stmt->execute([':email' => $email]);
                 if ($stmt->fetch()) {
                     throw new Exception("Este e-mail já está em uso.");
                 }
 
-                // Inserir usuário na tabela users
+                // Adiciona usuário na tabela users
                 $pwd_hash = password_hash($password, PASSWORD_BCRYPT);
                 $stmt = $pdo->prepare("INSERT INTO users (email, password_hash, role) VALUES (:email, :hash, :role)");
                 $stmt->execute([
@@ -60,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $user_id = $pdo->lastInsertId();
 
-                // Inserir perfil associado
+                // Adiciona perfil associado
                 if ($role === 'candidato') {
                     $stmtProfile = $pdo->prepare("INSERT INTO candidatos (user_id, nome_completo, cpf) VALUES (:user_id, :nome, :cpf)");
                     $stmtProfile->execute([
@@ -77,12 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ]);
                 }
 
-                // Confirma as inserções
                 $pdo->commit();
                 $success = "Conta criada com sucesso! Você já pode fazer login.";
 
             } catch (Exception $e) {
-                // Reverte transação em caso de erro
+                // Reverte em caso de erro
                 $pdo->rollBack();
                 if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
                     if (strpos($e->getMessage(), 'cpf') !== false) $error = "Este CPF já está cadastrado.";
@@ -111,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="bg-indigo-50 min-h-screen py-10 px-4">
     <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden drop-shadow-md p-8">
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold text-blue-600 mb-2">Empreender<span class="text-slate-800">RH</span></h1>
+            <a href="./index.php"><h1 class="text-3xl font-extrabold text-blue-600 mb-2">Empreender<span class="text-slate-800">RH</span></h1></a>
             <p class="text-slate-500">Crie sua conta para encontrar a oportunidade perfeita ou o candidato ideal.</p>
         </div>
 
@@ -131,7 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form method="POST" action="signup.php" class="space-y-6">
             
-            <!-- Type Selector -->
             <div class="grid grid-cols-2 gap-4 mb-6">
                 <div>
                     <input type="radio" id="role_candidato" name="role" value="candidato" class="peer hidden" checked onchange="toggleForm()">
@@ -149,14 +146,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <hr class="border-slate-100">
 
-            <!-- Credentials -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">E-mail</label>
                     <input type="email" name="email" required 
                         class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all placeholder-slate-400">
                 </div>
-                <div class="hidden md:block"></div> <!-- spacer -->
+                <div class="hidden md:block"></div>
                 
                 <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Senha</label>
@@ -243,7 +239,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         
-        // Initialize state on load
         window.addEventListener('DOMContentLoaded', toggleForm);
     </script>
 </body>

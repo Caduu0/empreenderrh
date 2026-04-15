@@ -73,7 +73,7 @@ CREATE TABLE vagas (
     FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- Relacionamento de Candidaturas (Candidato -> Vaga)
+-- Candidaturas (Candidato)
 CREATE TABLE candidaturas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     vaga_id INT NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE candidaturas (
     FOREIGN KEY (candidato_id) REFERENCES candidatos(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- Tabela de Vagas Favoritas do Candidato
+-- Vagas Favoritas do Candidato
 CREATE TABLE favoritos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     candidato_id INT NOT NULL,
@@ -99,6 +99,5 @@ CREATE TABLE favoritos (
 ) ENGINE=InnoDB;
 
 -- Inserção de um Administrador padrão (senha: caducadu)
--- Hash BCRYPT para 'caducadu' (Nota: em produção usar um hash mais robusto no setup inicial real)
 INSERT INTO users (email, password_hash, role) 
 VALUES ('cadu@empreenderrh.com', '$2y$10$KG6nUOvdHt3lLJ8EZntciOHtQkxP1kBLQKIlQdjN/gCHf.B4ISfJS', 'admin');

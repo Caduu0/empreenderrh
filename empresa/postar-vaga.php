@@ -1,9 +1,8 @@
 <?php
-// empresa/postar-vaga.php
 session_start();
 require_once '../config/db.php';
 
-// Obtém empresa_id seguro
+// Obtém o ID da empresa
 $stmt = $pdo->prepare("SELECT id FROM empresas WHERE user_id = :user_id");
 $stmt->execute([':user_id' => $_SESSION['user_id']]);
 $empresa = $stmt->fetch();

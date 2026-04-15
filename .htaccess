@@ -12,15 +12,14 @@ RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # ----------------------------------------------------
-# 2. URLS AMIGÁVEIS (Esconder o .php das requisições)
+# Esconde o .php das requisições
 # ----------------------------------------------------
-# Isso permite que acesso a /login exiba nativamente /login.php
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
 
 # ----------------------------------------------------
-# 3. BLINDAGEM DE ARQUIVOS SENSÍVEIS (Proteção Severa)
+# 3. BLINDAGEM DE ARQUIVOS SENSÍVEIS
 # ----------------------------------------------------
 # Impede o download acidental do config ou arquivos SQL
 <FilesMatch "\.(sql|log|ini|env|md)$">

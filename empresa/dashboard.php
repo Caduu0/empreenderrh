@@ -1,5 +1,4 @@
 <?php
-// empresa/dashboard.php
 session_start();
 require_once '../config/db.php';
 
@@ -13,23 +12,23 @@ if (!$empresa) {
 }
 $empresa_id = $empresa->id;
 
-// Busca estatísticas
-// 1. Vagas ativas
+// Estatísticas
+// Vagas ativas
 $stmtVagasAtivas = $pdo->prepare("SELECT COUNT(*) as total FROM vagas WHERE empresa_id = :id AND status = 'aberta'");
 $stmtVagasAtivas->execute([':id' => $empresa_id]);
 $vagas_ativas = $stmtVagasAtivas->fetch()->total;
 
-// 2. Total candidaturas recebidas
+// Candidaturas recebidas
 $stmtTotalCand = $pdo->prepare("SELECT COUNT(*) as total FROM candidaturas c JOIN vagas v ON c.vaga_id = v.id WHERE v.empresa_id = :id");
 $stmtTotalCand->execute([':id' => $empresa_id]);
 $total_candidaturas = $stmtTotalCand->fetch()->total;
 
-// 3. Novas candidaturas (nas últimas 24h)
+// Novas candidaturas (nas últimas 24h)
 $stmtNovasCand = $pdo->prepare("SELECT COUNT(*) as total FROM candidaturas c JOIN vagas v ON c.vaga_id = v.id WHERE v.empresa_id = :id AND c.data_candidatura >= NOW() - INTERVAL 1 DAY");
 $stmtNovasCand->execute([':id' => $empresa_id]);
 $novas_candidaturas = $stmtNovasCand->fetch()->total;
 
-// Busca as 5 candidaturas mais recentes
+// Mostra as 5 candidaturas mais recentes
 $sqlRecents = "SELECT c.id as candidatura_id, c.status, c.data_candidatura, 
                cand.nome_completo, v.titulo as vaga_titulo 
                FROM candidaturas c 

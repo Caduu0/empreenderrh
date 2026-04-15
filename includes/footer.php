@@ -37,11 +37,11 @@
             </div>
             
             <div class="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm">
-                <p>&copy; <?= date('Y') ?> EmpreenderRH. Todos os direitos reservados. Feito com excelência UI/UX.</p>
+                <p>&copy; <?= date('Y') ?> EmpreenderRH (Caduu). Todos os direitos reservados.</p>
                 <div class="flex space-x-6 mt-4 md:mt-0">
-                    <a href="#" class="text-slate-500 hover:text-white transition-colors duration-300">LinkedIn</a>
-                    <a href="#" class="text-slate-500 hover:text-white transition-colors duration-300">Twitter</a>
-                    <a href="#" class="text-slate-500 hover:text-white transition-colors duration-300">Instagram</a>
+                    <a href="https://www.linkedin.com/in/caduu/" class="text-slate-500 hover:text-white transition-colors duration-300">LinkedIn</a>
+                    <a href="https://caduu0.github.io/eduardo-ribeiro/" class="text-slate-500 hover:text-white transition-colors duration-300">Portifilio</a>
+                    <a href="https://www.instagram.com/caduuu0_" class="text-slate-500 hover:text-white transition-colors duration-300">Instagram</a>
                 </div>
             </div>
         </div>

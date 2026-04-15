@@ -1,5 +1,4 @@
 <?php
-// candidato/vagas.php
 session_start();
 require_once '../config/db.php';
 
@@ -13,7 +12,7 @@ $search = $_GET['q'] ?? '';
 $success = '';
 $error = '';
 
-// Lógica de Candidatura Rápida (Se botão "Candidatar-me" foi pressionado)
+// Candidatura Rápida
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'candidatar') {
     $vaga_id = (int)$_POST['vaga_id'];
     try {
@@ -29,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 }
 
-// Queries de busca
 $sql = "SELECT v.*, e.razao_social, e.nome_fantasia, e.logo 
         FROM vagas v 
         JOIN empresas e ON v.empresa_id = e.id 
@@ -89,7 +87,6 @@ include 'includes/header.php';
         <?php foreach($vagas as $vaga): ?>
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col md:flex-row gap-6 items-start hover:border-blue-300 hover:shadow-md transition-all">
                 
-                <!-- Info Section -->
                 <div class="flex-grow">
                     <div class="flex items-center gap-3 mb-2">
                         <span class="bg-indigo-50 text-indigo-700 font-semibold px-2 py-1 rounded text-xs"><?= htmlspecialchars($vaga->modalidade) ?></span>
@@ -107,7 +104,6 @@ include 'includes/header.php';
                     </p>
                 </div>
 
-                <!-- Actions Section -->
                 <div class="flex flex-col gap-3 w-full md:w-auto md:min-w-[180px] shrink-0">
                     <?php if ($vaga->mostrar_salario && $vaga->salario > 0): ?>
                         <div class="text-center mb-2 hidden md:block">

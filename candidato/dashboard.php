@@ -1,9 +1,8 @@
 <?php
-// candidato/dashboard.php
 session_start();
 require_once '../config/db.php';
 
-// Busca dados do perfil do candidato logado
+// Dados do perfil logado
 $stmt = $pdo->prepare("SELECT id, nome_completo FROM candidatos WHERE user_id = :user_id");
 $stmt->execute([':user_id' => $_SESSION['user_id']]);
 $candidato = $stmt->fetch();
@@ -13,7 +12,7 @@ if (!$candidato) {
 }
 $candidato_id = $candidato->id;
 
-// Busca estatísticas
+// Estatísticas
 $stmtStats1 = $pdo->prepare("SELECT COUNT(*) as total FROM candidaturas WHERE candidato_id = :id");
 $stmtStats1->execute([':id' => $candidato_id]);
 $total_candidaturas = $stmtStats1->fetch()->total;
@@ -22,7 +21,7 @@ $stmtStats2 = $pdo->prepare("SELECT COUNT(*) as total FROM favoritos WHERE candi
 $stmtStats2->execute([':id' => $candidato_id]);
 $total_favoritos = $stmtStats2->fetch()->total;
 
-// Busca vagas recentes (5 vagas)
+// Vagas recentes (5 vagas)
 $stmtVagas = $pdo->query("
     SELECT v.*, e.razao_social, e.nome_fantasia 
     FROM vagas v 
@@ -42,7 +41,7 @@ include 'includes/header.php';
     <p class="text-slate-500 mt-1 text-lg">Bem-vindo(a) de volta. Confira o panorama da sua jornada profissional hoje.</p>
 </div>
 
-<!-- Resumo em Cards -->
+<!-- Resumo -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex items-center hover:shadow-md transition-shadow">
         <div class="p-4 bg-blue-100 text-blue-600 rounded-xl mr-5">

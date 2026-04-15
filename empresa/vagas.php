@@ -1,9 +1,8 @@
 <?php
-// empresa/vagas.php
 session_start();
 require_once '../config/db.php';
 
-// Obtém empresa_id
+// Obtém ID da empresa
 $stmtE = $pdo->prepare("SELECT id FROM empresas WHERE user_id = :user_id");
 $stmtE->execute([':user_id' => $_SESSION['user_id']]);
 $empresa_id = $stmtE->fetch()->id ?? 0;
@@ -11,7 +10,7 @@ $empresa_id = $stmtE->fetch()->id ?? 0;
 $success = '';
 $error = '';
 
-// Lógica de Exclusão (Eliminar) / Alteração de Status
+// Exclusão / Alteração de Status
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete_id']) && is_numeric($_POST['delete_id'])) {
         $del_id = (int)$_POST['delete_id'];

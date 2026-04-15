@@ -1,9 +1,8 @@
 <?php
-// candidato/perfil.php
 session_start();
 require_once '../config/db.php';
 
-// Garantir que as colunas extras de currículo existam no MySQL graciosamente (Setup inicial on-the-fly)
+// Garante que as colunas extras de currículo existam no MySQL
 try {
     $pdo->exec("ALTER TABLE candidatos ADD COLUMN foto_perfil VARCHAR(255) AFTER resumo_profissional");
 } catch(Exception $e) {}
@@ -17,7 +16,7 @@ try {
 $error = '';
 $success = '';
 
-// Buscar dados atuais
+// Dados atuais
 $stmt = $pdo->prepare("SELECT * FROM candidatos WHERE user_id = :user_id");
 $stmt->execute([':user_id' => $_SESSION['user_id']]);
 $perfil = $stmt->fetch();
@@ -28,9 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formacao = $_POST['formacao'] ?? '';
     $linkedin = $_POST['linkedin_url'] ?? '';
     $portfolio = $_POST['portfolio_url'] ?? '';
-
-    // Manejo passivo de Foto de Perfil (base64 estático ou upload real se quiser avançar)
-    // Para simplificar, vou permitir uma URL de imagem ou salvar diretamente
     $foto_url = $perfil->foto_perfil ?? '';
     if (isset($_POST['foto_url']) && filter_var($_POST['foto_url'], FILTER_VALIDATE_URL)) {
         $foto_url = $_POST['foto_url'];
@@ -60,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $success = "Perfil atualizado com sucesso!";
         
-        // Atualiza a variável local para mostrar na view
+        // Atualiza a variável local
         $stmt->execute([':user_id' => $_SESSION['user_id']]);
         $perfil = $stmt->fetch();
         
@@ -92,7 +88,7 @@ include 'includes/header.php';
 
     <form method="POST" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         
-        <!-- HEADER DO FORMULÁRIO -->
+        <!-- FORMULÁRIO -->
         <div class="p-6 bg-slate-50 border-b border-slate-100 flex items-center gap-6">
             <div class="relative group">
                 <div class="h-24 w-24 rounded-full border-4 border-white shadow-md overflow-hidden bg-slate-200 flex items-center justify-center">
@@ -111,7 +107,7 @@ include 'includes/header.php';
 
         <div class="p-8 space-y-8">
             
-            <!-- SEC INFO BASICA -->
+            <!-- INFO BASICA -->
             <div>
                 <h3 class="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100">Informações de Contato</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -126,7 +122,7 @@ include 'includes/header.php';
                 </div>
             </div>
 
-            <!-- SEC PROFISSIONAL -->
+            <!-- PROFISSIONAL -->
             <div>
                 <h3 class="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100">Resumo Profissional</h3>
                 <div class="grid grid-cols-1 gap-6">
@@ -141,7 +137,7 @@ include 'includes/header.php';
                 </div>
             </div>
 
-            <!-- SEC LINKS -->
+            <!-- LINKS -->
             <div>
                 <h3 class="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100">Redes Profissionais e Portfólio</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -2,7 +2,7 @@
 session_start();
 require_once 'config/db.php';
 
-// Busca até 6 vagas em destaque (as mais recentes e abertas)
+// Busca até 6 vagas em destaque (recentes)
 $sqlDestaques = "SELECT v.*, e.razao_social, e.nome_fantasia 
                  FROM vagas v 
                  JOIN empresas e ON v.empresa_id = e.id 
@@ -14,9 +14,6 @@ $destaques = $pdo->query($sqlDestaques)->fetchAll();
 include 'includes/header.php';
 ?>
 
-<!-- ======================= -->
-<!-- HERO SECTION            -->
-<!-- ======================= -->
 <section class="relative bg-white overflow-hidden pb-16 lg:pb-24 pt-20">
     <div class="absolute inset-y-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50 via-white to-white opacity-60 z-0 pointer-events-none"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
@@ -30,7 +27,7 @@ include 'includes/header.php';
             Nossa plataforma une mentes brilhantes a empresas inovadoras. Construa sua carreira ou recrute o talento perfeito de maneira rápida, segura e escalável.
         </p>
         
-        <!-- CTA Buttons -->
+        <!-- Botões CTA -->
         <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
             <a href="signup.php" onclick="document.cookie='role_choice=candidato; path=/;'" class="bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-brand-600/30 transition-all duration-300 hover:-translate-y-1 transform text-lg">
                 Sou Candidato <span class="ml-2">&rarr;</span>
@@ -40,7 +37,7 @@ include 'includes/header.php';
             </a>
         </div>
 
-        <!-- Quick Search Bar (Simulação visual de busca que leva para auth real/painel) -->
+        <!-- Search Bar Rapida -->
         <div class="max-w-4xl mx-auto bg-white p-2 rounded-2xl shadow-xl border border-slate-100 flex flex-col md:flex-row gap-2 relative z-20">
             <div class="flex-grow flex items-center px-4 bg-slate-50 rounded-xl">
                 <svg class="h-6 w-6 text-slate-400 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -53,9 +50,6 @@ include 'includes/header.php';
     </div>
 </section>
 
-<!-- ======================= -->
-<!-- FEATURES SECTION        -->
-<!-- ======================= -->
 <section id="solucoes" class="py-20 bg-slate-50 border-t border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -64,7 +58,6 @@ include 'includes/header.php';
             <p class="text-slate-500 max-w-2xl mx-auto text-lg">Uma arquitetura projetada do zero para mitigar burocracias, com foco absoluto em Conversão de talentos e Segurança.</p>
         </div>
 
-        <!-- 3 Colunas -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
             
             <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition-shadow duration-300 group">
@@ -95,9 +88,6 @@ include 'includes/header.php';
     </div>
 </section>
 
-<!-- ======================= -->
-<!-- FEATURED JOBS SECTION   -->
-<!-- ======================= -->
 <section id="vagas_destaque" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         

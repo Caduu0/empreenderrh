@@ -1,17 +1,16 @@
 <?php
-// admin/usuarios.php
 session_start();
 require_once '../config/db.php';
 
 $success = '';
 $error = '';
 
-// Ações Punitivas de Controle de Usuários
+// Controle de Usuários
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $target_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
     $action = $_POST['action'];
     
-    // Bloqueia que o admin exclua/suspenda a sí mesmo, caso tente via DOM inspector
+    // Bloqueia que o admin se exclua, caso tente
     if ($target_id == $_SESSION['user_id']) {
         $error = "Você não pode suspender ou eliminar a si mesmo (sua própria conta ativa).";
     } else {
@@ -31,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
         } elseif ($action === 'delete') {
             try {
-                // DELETE cascades automaticamente graças aos Foreign Keys construídos no Passo 1!
                 $stmt = $pdo->prepare("DELETE FROM users WHERE id = :id AND role != 'admin'");
                 $stmt->execute([':id' => $target_id]);
                 $success = "Usuário e perfil associado (bem como candidaturas atreladas) limpos com vaporização total!";
@@ -42,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
 }
 
-// Queries de todos usuários
+// Usuários
 $sql = "SELECT u.id, u.email, u.role, u.status, u.created_at, 
         COALESCE(c.nome_completo, e.razao_social, 'Administrador Central') as nome 
         FROM users u 
@@ -51,7 +49,7 @@ $sql = "SELECT u.id, u.email, u.role, u.status, u.created_at,
         ORDER BY u.created_at DESC";
 $usuarios = $pdo->query($sql)->fetchAll();
 
-// O include traz a validação de sessão (admin) e o Sidebar
+// Traz a validação de sessão (admin) e o Sidebar
 include 'includes/sidebar.php';
 ?>
 
@@ -111,7 +109,7 @@ include 'includes/sidebar.php';
                         <td class="px-6 py-4 text-right">
                             <?php if($u->role !== 'admin'): ?>
                                 <div class="flex items-center justify-end space-x-2">
-                                    <!-- Ação Bloqueio -->
+                                    <!-- Bloqueio -->
                                     <form method="POST" class="inline">
                                         <input type="hidden" name="user_id" value="<?= $u->id ?>">
                                         <?php if($u->status === 'ativo'): ?>
@@ -122,12 +120,12 @@ include 'includes/sidebar.php';
                                         <?php else: ?>
                                             <input type="hidden" name="action" value="reactivate">
                                             <button type="submit" class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-bold text-xs uppercase px-3 py-1.5 rounded transition shadow-sm border border-indigo-200">
-                                                Perdoar e Ativar
+                                                Ativar Conta
                                             </button>
                                         <?php endif; ?>
                                     </form>
 
-                                    <!-- Ação Exclusão Nuclear -->
+                                    <!-- Exclusão -->
                                     <form method="POST" onclick="return confirm('ATENÇÃO ADMIN: Ações destrutivas como [Eliminar] apagam permanentemente histórico de Banco de Dados de um Candidato/Empresa (incluindo vagas abertas). Deseja vaporizar os vestígios da ID <?= $u->id ?>?');" class="inline">
                                         <input type="hidden" name="user_id" value="<?= $u->id ?>">
                                         <input type="hidden" name="action" value="delete">
@@ -147,8 +145,8 @@ include 'includes/sidebar.php';
     </div>
 </div>
 
-            </div> <!--Fecha max-w da view iniciada no sidebar-->
-        </main> <!-- Fecha o MAIN iniciado no sidebar-->
-    </div> <!-- Fecha o FLEX HEIGHT iniciado no sidebar-->
+            </div> <!--Fecha max-w da view iniciada no sidebar -->
+        </main> <!-- Fecha o MAIN iniciado no sidebar -->
+    </div> <!-- Fecha o FLEX HEIGHT iniciado no sidebar -->
 </body>
 </html>

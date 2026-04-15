@@ -1,5 +1,4 @@
 <?php
-// admin/dashboard.php
 session_start();
 require_once '../config/db.php';
 
@@ -26,7 +25,7 @@ $sqlRecentes = "SELECT u.id, u.email, u.role, u.status, u.created_at,
                 LIMIT 10";
 $recentes = $pdo->query($sqlRecentes)->fetchAll();
 
-// O include traz a validação de sessão embutida, o Sidebar e abre as tags de main content
+// Traz validação de sessão embutida, o Sidebar e abre as tags de main content
 include 'includes/sidebar.php';
 ?>
 
@@ -35,9 +34,7 @@ include 'includes/sidebar.php';
     <p class="text-slate-500 mt-2 text-lg">Visão holística sobre a tração, volume e métricas de toda plataforma EmpreenderRH.</p>
 </div>
 
-<!-- Cards Dashboard de Controle Global -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-    <!-- Card Candidatos -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-md transition duration-300">
         <div class="p-6">
             <div class="flex items-center justify-between mb-4">
@@ -50,7 +47,7 @@ include 'includes/sidebar.php';
         <div class="h-1 w-full bg-blue-600"></div>
     </div>
     
-    <!-- Card Empresas -->
+    <!-- Empresas -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-md transition duration-300">
         <div class="p-6">
             <div class="flex items-center justify-between mb-4">
@@ -63,7 +60,7 @@ include 'includes/sidebar.php';
         <div class="h-1 w-full bg-purple-600"></div>
     </div>
     
-    <!-- Card Vagas -->
+    <!-- Vagas -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-md transition duration-300">
         <div class="p-6">
             <div class="flex items-center justify-between mb-4">
@@ -76,7 +73,7 @@ include 'includes/sidebar.php';
         <div class="h-1 w-full bg-emerald-500"></div>
     </div>
     
-    <!-- Card Movimento (Candidaturas Completadas) -->
+    <!-- Movimento (Candidaturas) -->
     <div class="bg-slate-900 rounded-2xl shadow-xl overflow-hidden group">
         <div class="p-6 relative overflow-hidden">
             <div class="absolute top-0 right-0 -mr-4 -mt-4 opacity-10">
@@ -131,8 +128,8 @@ include 'includes/sidebar.php';
     </div>
 </div>
 
-            </div> <!--Fecha max-w da view iniciada no sidebar-->
-        </main> <!-- Fecha o MAIN iniciado no sidebar-->
-    </div> <!-- Fecha o FLEX HEIGHT iniciado no sidebar-->
+            </div> <!--Fecha max-w da view iniciada no sidebar -->
+        </main> <!-- Fecha o MAIN iniciado no sidebar -->
+    </div> <!-- Fecha o FLEX HEIGHT iniciado no sidebar -->
 </body>
 </html>

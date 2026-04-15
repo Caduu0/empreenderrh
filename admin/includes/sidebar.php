@@ -1,7 +1,5 @@
 <?php
-// admin/includes/sidebar.php
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    // A expulsão imediata exigida para garantir segurança Super-User
     header('Location: ../login.php');
     exit;
 }
@@ -28,10 +26,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <body class="bg-gray-100 font-sans antialiased text-slate-800">
     <div class="flex h-screen overflow-hidden">
         
-        <!-- Sidebar Navigation (Paleta: Autoridade -> Cinza Escuro e Azul Marinho) -->
+        <!-- Sidebar Admin -->
         <aside class="w-72 bg-slate-900 text-slate-300 flex flex-col shadow-2xl shrink-0 z-20">
             <div class="h-20 flex items-center px-8 border-b border-slate-800 bg-slate-950">
-                <span class="text-2xl font-bold text-white tracking-tight">Empreender<span class="text-blue-500">RH</span></span>
+                <a href="../index.php"><span class="text-2xl font-bold text-white tracking-tight">Empreender<span class="text-blue-500">RH</span></span></a>
                 <span class="ml-2 text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded border border-emerald-400/20">Admin</span>
             </div>
             
@@ -65,6 +63,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
         </aside>
 
-        <!-- Main Workspace Area -->
         <main class="flex-1 flex flex-col bg-slate-50 relative overflow-y-auto w-full">
             <div class="p-8 lg:p-12 max-w-screen-2xl mx-auto w-full">
+
+<!-- TAGS FECHADAS EM OUTRO ARQUIVO -->

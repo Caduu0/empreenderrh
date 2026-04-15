@@ -1,5 +1,4 @@
 <?php
-// candidato/includes/header.php
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'candidato') {
     header('Location: ../login.php');
     exit;
@@ -28,7 +27,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <nav class="bg-blue-700 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <!-- Mobile menu button -->
+                <!-- Botão menu (Mobile) -->
                 <div class="flex items-center md:hidden">
                     <button type="button" class="text-white hover:text-blue-200 focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -39,7 +38,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <span class="text-xl font-bold tracking-tight">Empreender<span class="text-blue-200">RH</span></span>
+                        <a href="../index.php"><span class="text-xl font-bold tracking-tight">Empreender<span class="text-blue-200">RH</span></span></a>
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-baseline space-x-4">
@@ -58,7 +57,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
         </div>
 
-        <!-- Mobile menu -->
+        <!-- Menu (Mobile) -->
         <div class="md:hidden hidden bg-blue-800" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="dashboard.php" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-blue-700">Dashboard</a>
@@ -69,3 +68,5 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </div>
     </nav>
     <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+
+<!-- TAGS FECHADAS EM OUTRO ARQUIVO -->

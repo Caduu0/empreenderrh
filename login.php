@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($user->status !== 'ativo') {
                     $error = "Sua conta está inativa ou foi banida. Contate o suporte.";
                 } else {
-                    // Regenerar ID da sessão por segurança para evitar Session Fixation
                     session_regenerate_id(true);
 
                     $_SESSION['user_id'] = $user->id;
@@ -67,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden drop-shadow-md">
         <div class="p-8">
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-extrabold text-blue-600 mb-2">Empreender<span class="text-slate-800">RH</span></h1>
+                <a href="./index.php"><h1 class="text-3xl font-extrabold text-blue-600 mb-2">Empreender<span class="text-slate-800">RH</span></h1></a>
                 <p class="text-slate-500">Bem-vindo de volta! Faça login na sua conta.</p>
             </div>
 

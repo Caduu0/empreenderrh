@@ -1,12 +1,11 @@
 <?php
-// admin/vagas.php
 session_start();
 require_once '../config/db.php';
 
 $success = '';
 $error = '';
 
-// Ações de Moderação de Vagas
+// Moderação de Vagas
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $vaga_id = filter_input(INPUT_POST, 'vaga_id', FILTER_VALIDATE_INT);
     $action = $_POST['action'];
@@ -14,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($vaga_id) {
         if ($action === 'approve') {
             try {
-                // Como não colocamos "pendente" nativo no banco para vagas, se estava cancelada/pausada ela volta a ser 'aberta'. Funciona como Force-Ativar.
                 $stmt = $pdo->prepare("UPDATE vagas SET status = 'aberta' WHERE id = :id");
                 $stmt->execute([':id' => $vaga_id]);
                 $success = "A vaga foi re-aprovada para listagem pública com sucesso.";
@@ -35,14 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
 }
 
-// Queries de todas as vagas globais
+// Vagas globais
 $sql = "SELECT v.id, v.titulo, v.status, v.created_at, e.razao_social, e.nome_fantasia 
         FROM vagas v 
         JOIN empresas e ON v.empresa_id = e.id 
         ORDER BY v.created_at DESC";
 $vagas = $pdo->query($sql)->fetchAll();
 
-// O include traz a validação de sessão (admin) e o Sidebar
+// Traz a validação de sessão (admin) e o Sidebar
 include 'includes/sidebar.php';
 ?>
 
@@ -101,12 +99,12 @@ include 'includes/sidebar.php';
                                         <?php if($v->status === 'aberta'): ?>
                                             <input type="hidden" name="action" value="suspend">
                                             <button type="submit" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-bold text-xs px-3 py-1.5 rounded transition shadow-sm border border-yellow-200 w-24">
-                                                Censurar Ocultar
+                                                Ocultar
                                             </button>
                                         <?php else: ?>
                                             <input type="hidden" name="action" value="approve">
                                             <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase px-3 py-1.5 rounded transition shadow shadow-emerald-500/50 border border-emerald-700 w-24">
-                                                Aprovar & Live
+                                                Aprovar
                                             </button>
                                         <?php endif; ?>
                                     </form>
@@ -116,7 +114,7 @@ include 'includes/sidebar.php';
                                         <input type="hidden" name="vaga_id" value="<?= $v->id ?>">
                                         <input type="hidden" name="action" value="delete">
                                         <button type="submit" class="text-rose-500 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded font-bold text-xs uppercase transition border border-rose-200">
-                                            Apagar Fake
+                                            Apagar
                                         </button>
                                     </form>
                                 </div>
@@ -133,8 +131,8 @@ include 'includes/sidebar.php';
     </div>
 </div>
 
-            </div> <!--Fecha max-w da view iniciada no sidebar-->
-        </main> <!-- Fecha o MAIN iniciado no sidebar-->
-    </div> <!-- Fecha o FLEX HEIGHT iniciado no sidebar-->
+            </div> <!--Fecha max-w da view iniciada no sidebar -->
+        </main> <!-- Fecha o MAIN iniciado no sidebar -->
+    </div> <!-- Fecha o FLEX HEIGHT iniciado no sidebar -->
 </body>
 </html>

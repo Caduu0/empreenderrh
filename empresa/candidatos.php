@@ -1,21 +1,20 @@
 <?php
-// empresa/candidatos.php
 session_start();
 require_once '../config/db.php';
 
-// Receber o vaga_id
+// Recebe o ID da vaga
 $vaga_id = filter_input(INPUT_GET, 'vaga_id', FILTER_VALIDATE_INT);
 
 if (!$vaga_id) {
     die("Id da vaga inválido.");
 }
 
-// Obtém empresa_id
+// Recebe o ID da empresa
 $stmtE = $pdo->prepare("SELECT id FROM empresas WHERE user_id = :user_id");
 $stmtE->execute([':user_id' => $_SESSION['user_id']]);
 $empresa_id = $stmtE->fetch()->id ?? 0;
 
-// Valida se a vaga pertence a esta empresa para impedir ataque IDOR (Insecure Direct Object Reference)
+// Verifica se a vaga pertence a empresa para impedir ataque IDOR
 $stmtVaga = $pdo->prepare("SELECT titulo FROM vagas WHERE id = :v_id AND empresa_id = :e_id");
 $stmtVaga->execute([':v_id' => $vaga_id, ':e_id' => $empresa_id]);
 $vagaInfo = $stmtVaga->fetch();
@@ -27,7 +26,7 @@ if (!$vagaInfo) {
 $success = '';
 $error = '';
 
-// Lógica para alterar o status do candidato
+// Altera o status do candidato
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_status') {
     $cand_id = filter_input(INPUT_POST, 'candidatura_id', FILTER_VALIDATE_INT);
     $new_status = filter_input(INPUT_POST, 'novo_status', FILTER_SANITIZE_STRING);
@@ -36,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     
     if ($cand_id && in_array($new_status, $allowed_status)) {
         try {
-            // Verifica também segurança na atualização (se a candidatura é da vaga atrelada à empresa)
+            // Verifica a segurança na atualização (se a candidatura é da vaga atrelada a uma empresa)
             $stmtUpd = $pdo->prepare("UPDATE candidaturas SET status = :status WHERE id = :id AND vaga_id = :v_id");
             $stmtUpd->execute([':status' => $new_status, ':id' => $cand_id, ':v_id' => $vaga_id]);
             $success = "Status do candidato atualizado com sucesso!";
@@ -46,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 }
 
-// Buscar Lista de Candidaturas
+// Lista de Candidaturas
 $sql = "SELECT c.id as candidatura_id, c.status, c.data_candidatura, 
         cand.id as cand_id, cand.nome_completo, cand.cidade, cand.estado, cand.experiencia_profissional, cand.telefone
         FROM candidaturas c 
@@ -81,7 +80,7 @@ include 'includes/header.php';
         <?php foreach($candidaturas as $c): ?>
             
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow relative overflow-hidden">
-                <!-- Status color top border indicator -->
+                <!-- Status colorido -->
                 <?php 
                     $borderColor = match($c->status) {
                         'pendente' => 'bg-yellow-400',
@@ -113,15 +112,14 @@ include 'includes/header.php';
                         </div>
                     </div>
 
-                    <!-- Botão Perfil (Sem pág real separada, abre um Modal via JS para mostrar as specs completas contornando requisitos estritos criamos um preview rápido na tela) -->
-                    <!-- Simulação do "Link para perfil" pedida pelo USER -->
+                    <!-- Botão Perfil -->
                     <div class="shrink-0 flex gap-2 w-full sm:w-auto">
                         <button onclick="alert('Currículo / Resumo do Candidato:\n\n<?= addslashes(preg_replace('/\s+/', ' ', $c->experiencia_profissional ?? 'Nenhum dado informado ainda.')) ?>')" class="w-full sm:w-auto px-4 py-2 border border-blue-200 text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg font-medium text-sm transition-colors text-center">
                             Inspecionar Perfil
                         </button>
                     </div>
 
-                    <!-- Alteração Funil do Status -->
+                    <!-- Alteração dos Status -->
                     <div class="w-full lg:w-auto lg:min-w-[280px]">
                         <form method="POST" class="flex flex-col sm:flex-row items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
                             <input type="hidden" name="action" value="update_status">

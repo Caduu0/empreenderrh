@@ -31,7 +31,7 @@ if ($is_logged_in) {
                             100: '#dbeafe',
                             500: '#3b82f6',
                             600: '#2563eb',
-                            700: '#1d4ed8', // Azul Safira Primário
+                            700: '#1d4ed8',
                             900: '#1e3a8a',
                         }
                     }
@@ -42,7 +42,7 @@ if ($is_logged_in) {
 </head>
 <body class="bg-slate-50 flex flex-col min-h-screen font-sans text-slate-800 antialiased">
     
-    <!-- Navbar Global -->
+    <!-- Navbar -->
     <nav class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
@@ -54,7 +54,7 @@ if ($is_logged_in) {
                     </a>
                 </div>
 
-                <!-- Desktop Menu -->
+                <!-- Menu (Desktop) -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="index.php" class="text-sm font-semibold text-slate-600 hover:text-brand-600 transition-colors duration-300">Início</a>
                     <a href="#vagas_destaque" class="text-sm font-semibold text-slate-600 hover:text-brand-600 transition-colors duration-300">Vagas</a>
@@ -71,7 +71,7 @@ if ($is_logged_in) {
                     </div>
                 </div>
 
-                <!-- Mobile menu button -->
+                <!-- Botão menu (Mobile) -->
                 <div class="flex items-center md:hidden">
                     <button type="button" class="text-slate-500 hover:text-brand-600 focus:outline-none transition-colors" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -83,7 +83,7 @@ if ($is_logged_in) {
             </div>
         </div>
 
-        <!-- Mobile Menu -->
+        <!-- Menu (Mobile) -->
         <div class="md:hidden hidden bg-white border-t border-slate-100 absolute w-full shadow-lg" id="mobile-menu">
             <div class="px-4 py-3 space-y-1 sm:px-3 flex flex-col">
                 <a href="index.php" class="block px-3 py-3 rounded-md text-base font-medium text-slate-700 hover:text-brand-600 hover:bg-slate-50">Início</a>
@@ -102,3 +102,5 @@ if ($is_logged_in) {
         </div>
     </nav>
     <main class="flex-grow w-full">
+
+<!-- TAGS FECHADAS EM OUTRO ARQUIVO -->
